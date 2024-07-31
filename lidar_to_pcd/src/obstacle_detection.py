@@ -49,7 +49,7 @@ class ObstacleDetectionNode(Node):
 
         return filtered_pcd
 
-    def detect_obstacles_with_meanshift(self, pcd):
+    def detect_obstacles(self, pcd):
         # Convert point cloud to NumPy array
         points = np.asarray(pcd.points)
 
@@ -77,6 +77,7 @@ class ObstacleDetectionNode(Node):
                 continue
             cluster_points = points[labels == label]
             centroid = np.mean(cluster_points, axis=0)
+            # Calculate the height
             min_height = np.min(cluster_points[:, 2])
             max_height = np.max(cluster_points[:, 2])
             height = (max_height - min_height) * 100  # Height in centimeters
@@ -103,8 +104,8 @@ class ObstacleDetectionNode(Node):
         # Filter and downsample the point cloud
         filtered_pcd = self.filter_and_downsample(self.pcd)
         
-        # Detect obstacles with meanshift
-        self.detect_obstacles_with_meanshift(filtered_pcd)
+        # Detect obstacles and estimate their height
+        self.detect_obstacles(filtered_pcd)
 
     def call_obstacle_detection_service(self):
         # Log that the obstacle detection service is being called
