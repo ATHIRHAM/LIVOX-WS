@@ -89,6 +89,8 @@ class ObstacleDetectionNode(Node):
 
             # Log cluster information
             self.get_logger().info(f"Obstacle Cluster {label}: Centroid: {centroid}, Height: {height} cm")
+            # Print height of the cluster to console
+            print(f"Cluster {label}: Height: {height} cm")
 
         # Run the visualizer
         vis.run()
